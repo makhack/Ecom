@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Product edit</h1>
+
+    {{ form_start(edit_form) }}
+        {{ form_row(edit_form.name) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.price) }}
+
+        <h3> {{ form_label(edit_form.images) }} </h3>
+
+        <ul class="images" data-prototype="{{ form_widget(edit_form.images.vars.prototype)|e('html_attr') }}">
+            {% for image in edit_form.images %}
+                
+                <li><img src="{{ asset('Images/'~image.vars["value"].getFileName()) | imagine_filter('my_thumb') }}">{{ form_row(image.image) }}</li>
+            {% endfor %}
+        </ul>
+        <input type="submit" value="Enregistrer" />
+    {{ form_widget(edit_form._token) }}
+    {{ form_end(edit_form, {'render_rest': false}) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('product_index') }}">Back to the list</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+
+    function addImageForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        var newForm = prototype;
+        // You need this only if you didn't set 'label' => false in your tags field in TaskType
+        // Replace '__name__label__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        // newForm = newForm.replace(/__name__label__/g, index);
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        newForm = newForm.replace(/__name__/g, index);
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a image" link li
+        var $newFormLi = $('<li></li>').append(newForm);
+        $newLinkLi.before($newFormLi);
+
+        addImageFormDeleteLink($newFormLi);
+    }
+
+    function addImageFormDeleteLink($imageFormLi) {
+        var $removeFormA = $('<a href="#">delete this image</a><br><br>----------------------<br><br>');
+        $imageFormLi.append($removeFormA);
+        $removeFormA.append()
+
+        $removeFormA.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // remove the li for the tag form
+            $imageFormLi.remove();
+        });
+    }
+
+
+    var $collectionHolder;
+
+    // setup an "add a tag" link
+    var $addImageLink = $('<a href="#" class="add_image_link">Add a images</a>');
+    var $newLinkLi = $('<li></li>').append($addImageLink);
+
+    jQuery(document).ready(function() {
+        // Get the ul that holds the collection of images
+        $collectionHolder = $('ul.images');
+
+        $collectionHolder.find('li').each(function() {
+            addImageFormDeleteLink($(this));
+        });
+
+        // add the "add a tag" anchor and li to the images ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addImageLink.on('click', function(e) {
+            // prevent the link from creating a "#" on the URL
+            e.preventDefault();
+
+            // add a new tag form (see next code block)
+            addImageForm($collectionHolder, $newLinkLi);
+        });
+    });
+</script>
+{% endblock %}

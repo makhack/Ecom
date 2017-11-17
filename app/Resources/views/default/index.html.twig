@@ -1,0 +1,334 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+
+  <div style="  height: 75px;
+    line-height: 75px;
+    white-space: nowrap;">
+      <div style="text-align: center;font-size:xx-large;" class="font"> Baby Bijoux </div>  
+  </div>
+
+  <div style="
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 7px -10px #8c8b8b inset;">    
+  </div>
+
+
+  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="height:300px; margin-top:30px;">
+  <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+
+  <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox" style="height: 300px">
+      <div class="item active" style="height: 100%">
+
+        <img src="{{ asset('Images/3cbababfedda318db5a8ab3737a10253.jpeg') | imagine_filter('carousel') }}" alt="..."
+          style="
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto
+            ">
+
+        <div class="carousel-caption">
+         ...
+        </div>
+      </div>
+      <div class="item" style="height: 100%">
+
+        <img src="{{ asset('Images/3cbababfedda318db5a8ab3737a10253.jpeg') | imagine_filter('carousel')}}" alt="..." 
+          style="
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto
+        ">
+
+        <div class="carousel-caption">
+          ...
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- FB -->
+    <div style="margin-top:40px" id="fb-root"></div>
+
+
+    <!-- Your embedded video player code -->
+    <div class="fb-video col-sm-6" data-href="https://www.facebook.com/samanthaleflem/videos/2078764735679758/" data-width="500" data-height="250px" data-show-text="false">
+      <div class="fb-xfbml-parse-ignore">
+
+      </div>
+    </div>
+
+    <div class="col-sm-6" style="display: table; height: 250px; overflow: hidden;">
+      <div style="display: table-cell; vertical-align: middle;">
+        <div>
+           Jeune maman, qui se lance dans la création d'attache tétine personnalisé, bracelet, porte-clé ...
+           Des petits bijoux pour vos babys.
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <div class="category-list">
+      {% for category in categories %}
+        {% if loop.last != true %}
+          <div style="display:inline-block"> {{ category.name|e }} | </div>
+        {% else %}
+          <div style="display:inline-block"> {{ category.name|e }} </div>
+        {% endif %}
+      {% endfor %}
+  </div>
+  <br>
+
+  <div class="carou">      
+    {% for key, product in pagination %}
+
+      <div class="col-xs-6 col-md-3 text-center">
+
+        <div id="carousel{{key}}" class="carousel slide carousel-fade" data-ride="carousel" style="height:220px;margin-left: auto; margin-right: auto;">
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            {% for key, image in product.images %}
+              {% if key == 0 %}
+                <div class="item active">
+              {% else %}
+                <div class="item">
+              {% endif %}
+                <img src="{{ asset('Images/'~image.fileName) | imagine_filter('my_thumb')}}" class="shadow" >
+                <div class="carousel-caption" style="margin-bottom: -100px">
+                  <p style="text-shadow: 0px 0px 1px #000000;
+  color: #fff;">{{ product.name|e }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+
+
+      {# div col-md-4 #}
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+
+</div>
+</div>
+  <div class="navigation paginat">
+    {{ knp_pagination_render(pagination) }}
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+  <script>
+$(document).ready(function(){
+
+  var imgs = $(".carou").find(".carousel");
+
+  $.each(imgs,function(i,v) {
+    $(v).carousel({
+      interval: false,
+      pause: null
+    });
+    $(v).carousel('pause');
+
+
+    $(v).hover(function(event){
+      
+      $(this).data("bs.carousel").options.interval =  200;
+      setTimeout(function(){
+        $(v).data("bs.carousel").options.interval =  2000;
+      }, 200);
+      $(this).carousel('cycle');
+
+    },function(event){
+      $(this).carousel(0);
+      $(this).carousel('pause');
+
+
+
+    });
+
+  });
+});
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+
+  <style type="text/css">
+      .category-list{
+        margin-top:20px;
+        font-size: 26px;
+      }
+
+
+      .carousel-caption{
+        padding-bottom:100px;
+      }
+      .shadow {
+         -moz-box-shadow:    0 8px 6px -6px black;
+         -webkit-box-shadow: 0 8px 6px -6px black;
+          box-shadow: 0 8px 6px -6px black;
+      }
+
+
+
+      .rw-words-1 span{
+        position: absolute;
+        opacity: 0;
+        overflow: hidden;
+        color: #f65a3a;
+        font-weight:400 !important;
+        -webkit-animation: rotateWord 18s linear infinite 0s;
+        -ms-animation: rotateWord 18s linear infinite 0s;
+        animation: rotateWord 18s linear infinite 0s;
+      }
+      .rw-words-1 span:nth-child(2) { 
+          -webkit-animation-delay: 3s; 
+        -ms-animation-delay: 3s; 
+        animation-delay: 3s; 
+        color: #0d9b56;
+      }
+      .rw-words-1 span:nth-child(3) { 
+          -webkit-animation-delay: 6s; 
+        -ms-animation-delay: 6s; 
+        animation-delay: 6s; 
+        color: #f65a3a; 
+      }
+      .rw-words-1 span:nth-child(4) { 
+          -webkit-animation-delay: 9s; 
+        -ms-animation-delay: 9s; 
+        animation-delay: 9s; 
+        color:#0d9b56;
+      }
+      @-webkit-keyframes rotateWord {
+          0% { opacity: 0; }
+          2% { opacity: 0; -webkit-transform: translateY(-30px); }
+        5% { opacity: 1; -webkit-transform: translateY(0px);}
+          17% { opacity: 1; -webkit-transform: translateY(0px); }
+        20% { opacity: 0; -webkit-transform: translateY(30px); }
+        80% { opacity: 0; }
+          100% { opacity: 0; }
+      }
+      @-ms-keyframes rotateWord {
+          0% { opacity: 0; }
+          2% { opacity: 0; -ms-transform: translateY(-30px); }
+        5% { opacity: 1; -ms-transform: translateY(0px);}
+          17% { opacity: 1; -ms-transform: translateY(0px); }
+        20% { opacity: 0; -ms-transform: translateY(30px); }
+        80% { opacity: 0; }
+          100% { opacity: 0; }
+      }
+      @keyframes rotateWord {
+          0% { opacity: 0; }
+          2% { opacity: 0; -webkit-transform: translateY(-30px); transform: translateY(-30px); }
+        5% { opacity: 1; -webkit-transform: translateY(0px); transform: translateY(0px);}
+          17% { opacity: 1; -webkit-transform: translateY(0px); transform: translateY(0px); }
+        20% { opacity: 0; -webkit-transform: translateY(30px); transform: translateY(30px); }
+        80% { opacity: 0; }
+          100% { opacity: 0; }
+      }
+      .rw-words{
+        display: inline;
+        text-indent: 10px;
+      }
+      .agileits-banner-info span {
+          color: #fff;
+          font-size: 28px;
+          letter-spacing: 3px;
+          font-weight: 700;
+          text-align: left !important;
+      }
+
+      .agileits_w3layouts_more a {
+          font-size: 1.1em;
+          color: #fff;
+          text-decoration: none;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          background:#0d9b56;
+          padding: .7em 2em;
+          display: inline-block;
+          margin-top: 40px;
+        border-radius:2px;
+      }
+      .agileits_w3layouts_more a:focus{
+        outline:none;
+      }
+      .agileits_w3layouts_more a:hover{
+        background:#f65a3a;
+      }
+      .agileits_w3layouts_more.menu__item {
+          text-align: center;
+      }
+
+      .carousel-fade .carousel-inner .item {
+        opacity: 0;
+        transition-property: opacity;
+      }
+
+      .carousel-fade .carousel-inner .active {
+        opacity: 1;
+      }
+
+      .carousel-fade .carousel-inner .active.left,
+      .carousel-fade .carousel-inner .active.right {
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+      }
+
+      .carousel-fade .carousel-inner .next.left,
+      .carousel-fade .carousel-inner .prev.right {
+        opacity: 1;
+      }
+
+      .carousel-fade .carousel-control {
+        z-index: 2;
+      }
+
+      /*
+      WHAT IS NEW IN 3.3: "Added transforms to improve carousel performance in modern browsers."
+      now override the 3.3 new styles for modern browsers & apply opacity
+      */
+      @media all and (transform-3d), (-webkit-transform-3d) {
+          .carousel-fade .carousel-inner > .item.next,
+          .carousel-fade .carousel-inner > .item.active.right {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+          .carousel-fade .carousel-inner > .item.prev,
+          .carousel-fade .carousel-inner > .item.active.left {
+            opacity: 0;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+          .carousel-fade .carousel-inner > .item.next.left,
+          .carousel-fade .carousel-inner > .item.prev.right,
+          .carousel-fade .carousel-inner > .item.active {
+            opacity: 1;
+            -webkit-transform: translate3d(0, 0, 0);
+                    transform: translate3d(0, 0, 0);
+          }
+      }
+
+
+  </style>
+{% endblock %}

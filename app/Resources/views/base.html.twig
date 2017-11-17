@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}" />
+
+        <style type="text/css">
+
+            .paginat{
+                text-align: center;
+            }
+
+            @font-face {
+                font-family: "Alex Brush";
+                src: url("{{ asset('css/AlexBrush-Regular.ttf') }}") format("truetype");
+            }
+            .font { 
+                font-family: "Alex Brush", Verdana, Tahoma;
+            }
+        </style>
+
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset('node_modules/jquery/dist/jquery.js') }}"></script>
+            <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.js') }}"></script>
+
+            <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
+                        fjs.parentNode.insertBefore(js, fjs);
+                      }(document, 'script', 'facebook-jssdk'));
+            </script>
+        {% endblock %}
+    </body>
+</html>

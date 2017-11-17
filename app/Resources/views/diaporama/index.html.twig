@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Diaporamas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for diaporama in diaporamas %}
+            <tr>
+                <td><a href="{{ path('diaporama_show', { 'id': diaporama.id }) }}">{{ diaporama.id }}</a></td>
+                <td>{{ diaporama.name }}</td>
+                <td>{% if diaporama.createdAt %}{{ diaporama.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if diaporama.updatedAt %}{{ diaporama.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('diaporama_show', { 'id': diaporama.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('diaporama_edit', { 'id': diaporama.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('diaporama_new') }}">Create a new diaporama</a>
+        </li>
+    </ul>
+{% endblock %}
