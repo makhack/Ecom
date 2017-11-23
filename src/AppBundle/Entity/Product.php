@@ -52,6 +52,12 @@ class Product
      */
     private $category;
 
+/**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Tva", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tva;
+
     /**
      * @var \DateTime
      *
@@ -286,5 +292,29 @@ class Product
     public function getImages()
     {
         return $this->images;
+    }
+
+
+    /**
+     * Set tva
+     *
+     * @param \AppBundle\Entity\Tva $tva
+     * @return Produits
+     */
+    public function setTva(\AppBundle\Entity\Tva $tva)
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    /**
+     * Get tva
+     *
+     * @return \AppBundle\Entity\Tva 
+     */
+    public function getTva()
+    {
+        return $this->tva;
     }
 }

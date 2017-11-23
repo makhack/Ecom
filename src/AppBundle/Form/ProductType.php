@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
+
 class ProductType extends AbstractType
 {
     /**
@@ -21,7 +24,8 @@ class ProductType extends AbstractType
         $builder
         ->add('name')
         ->add('description')
-        ->add('price');
+        ->add('price')
+        ->add('tva');
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $product = $event->getData();

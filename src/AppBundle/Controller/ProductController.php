@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Product controller.
  *
- * @Route("product")
+ * @Route("admin/product")
  */
 class ProductController extends Controller
 {
@@ -53,10 +53,6 @@ class ProductController extends Controller
 
             if(count($product->getImages()) === 0) {
                 $session = new Session();
-
-                // set and get session attributes
-                $session->set('name', 'Drak');
-                $session->get('name');
 
                 // set flash messages
                 $session->getFlashBag()->add('notice', 'Il faut mettre au moins une image dans le produit');

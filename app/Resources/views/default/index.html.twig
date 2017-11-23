@@ -2,6 +2,11 @@
 
 {% block body %}
 <div class="container">
+  {% for flashMessage in app.session.flashbag.get('success') %}
+      <div class="alert alert-success">
+          {{ flashMessage }}
+      </div>
+  {% endfor %}
 
   <div style="  height: 75px;
     line-height: 75px;
@@ -9,13 +14,20 @@
       <div style="text-align: center;font-size:xx-large;" class="font"> Baby Bijoux </div>  
   </div>
 
+  <div
+
   <div style="
     height: 10px;
     border: 0;
     box-shadow: 0 10px 7px -10px #8c8b8b inset;">    
   </div>
 
-
+  {% if is_granted('ROLE_USER') %}
+    <li><a href="{{ path('fos_user_security_logout') }}">logout</a></li>
+  {% else %}
+    <li><a href="{{ path('fos_user_security_login') }}">login</a></li>
+  {% endif %}
+  {{ render(controller('AppBundle:Panier:menu')) }}
   <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="height:300px; margin-top:30px;">
   <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -113,12 +125,25 @@
             {% endfor %}
           </div>
         </div>
-        
 
-
-      {# div col-md-4 #}
       </div>
+      {% if panier[product.id] is not defined %}
+        <form action="{{ path('cart_product_add', { 'id' : product.id }) }}" method="get">
+            <select name="qte" class="span1">
+                {% for i in 1..10 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
 
+            <div>
+                <button class="btn btn-primary">Ajouter au panier</button>
+            </div>
+        </form>
+      {% else %}
+          <div>
+              <a href="{{ path('panier') }}" class="btn btn-primary">Le produit est déjà dans votre panier</a>
+          </div>
+      {% endif %}
     {% endfor %}
 
   </div>
